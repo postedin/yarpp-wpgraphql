@@ -1,5 +1,5 @@
 {
-  "name": "matepaiva/yarpp-wpgraphql",
+  "name": "postedin/yarpp-wpgraphql",
   "description": "Creates a relatedPosts field in Post type with wp-graphql. You must have installed wp-graphql and YARPP.",
   "keywords": ["wordpress", "plugin", "wp-graphql", "wpgraphql", "yarpp", "related posts"],
   "homepage": "https://github.com/matepaiva/yarpp-wpgraphql",
@@ -14,6 +14,6 @@
   ],
   "type": "wordpress-plugin",
   "require": {
-    "php": ">=5.3.2",
+    "php": ">=5.3.2"
   }
 }
