@@ -30,9 +30,14 @@ add_action('graphql_register_types', function () {
         global $yarpp;
         $limit = isset($args['where']['limit']) ? $args['where']['limit'] : null;
         $related_posts = $yarpp->get_related($post->ID, $limit ? ['limit' => $limit] : null);
-        $args['where']['in'] = array_map(function ($related_post) {
-          return $related_post->ID;
-        }, $related_posts);
+        
+        if (count($related_posts)) {
+          $args['where']['in'] = array_map(function ($related_post) {
+            return $related_post->ID;
+          }, $related_posts);
+        } else {
+          $args['where']['eq'] = 0;
+        }
 
         $resolver = new \WPGraphQL\Data\Connection\PostObjectConnectionResolver(null, $args, $context, $info, 'post');
         $result = $resolver->get_connection();
