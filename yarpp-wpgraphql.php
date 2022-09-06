@@ -3,7 +3,7 @@
 /**
  * Plugin Name: YARPP WPGraphQL
  * Plugin URI: https://github.com/matepaiva/yarpp-wpgraphql
- * Version: 1.0.1
+ * Version: 1.1.0
  * Author: Matheus Paiva
  * Author URI: https://github.com/matepaiva/
  * Description: Creates a relatedPosts field in Post type with wp-graphql. You must have installed wp-graphql and YARPP.
@@ -13,6 +13,7 @@
 
 add_action('graphql_register_types', function () {
   global $yarpp;
+  
   if ($yarpp) {
     \register_graphql_connection([
       'fromType' => 'Post',
@@ -28,6 +29,7 @@ add_action('graphql_register_types', function () {
       ],
       'resolve' => function ($post, $args, $context, $info) {
         global $yarpp;
+        
         $limit = isset($args['where']['limit']) ? $args['where']['limit'] : null;
         $related_posts = $yarpp->get_related($post->ID, $limit ? ['limit' => $limit] : null);
         
@@ -36,12 +38,12 @@ add_action('graphql_register_types', function () {
             return $related_post->ID;
           }, $related_posts);
         } else {
-          $args['where']['eq'] = 0;
+          $args['where']['in'] = [0];
         }
 
         $resolver = new \WPGraphQL\Data\Connection\PostObjectConnectionResolver(null, $args, $context, $info, 'post');
-        $result = $resolver->get_connection();
-        return $result;
+        
+        return $resolver->get_connection();
       }
     ]);
   }
